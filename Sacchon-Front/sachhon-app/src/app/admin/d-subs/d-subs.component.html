@@ -1,0 +1,67 @@
+<nav class="navbar navbar-dark bg-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <button type="button" class="btn btn-outline-light" (click)="backClicked()">Back</button></li>
+  </ul>
+</nav>
+
+<div class="container-fluid h-100">
+  <div class="row ">
+    <div class="col-sm-7 ">
+      <div class="card card-subs my-5">
+        <div class="card-body">
+      <h3>Doctor's Submissions</h3>
+      <form [formGroup]="searchDoctorForm" (ngSubmit)="searchDoctorFormSubmitted()">
+        <div class="form-group">
+          <input type="text" class="form-control col-5" placeholder="Doctor's username" formControlName="username">
+        </div>
+        <div class="center">
+          <button type="submit" class="btn btn-primary" [disabled]="!searchDoctorForm.valid">Submit</button>
+        </div>
+      </form>
+      <ngb-datepicker id="dp" (dateSelect)="doctorConsultsDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden">
+      </ngb-datepicker>
+      <ng-template #t let-date let-focused="focused">
+        <span class="custom-day"
+              [class.focused]="focused"
+              [class.range]="docConsultIsRange(date)"
+              [class.faded]="docConsultIsHovered(date) || docConsultIsInside(date)"
+              (mouseenter)="docConsultHoveredDate = date"
+              (mouseleave)="docConsultHoveredDate = null">
+          {{ date.day }}
+        </span>
+      </ng-template>
+      <div>
+        <button type="button" class="btn btn-primary" (click)="getConsultsByDate()">Get</button>
+      </div>
+
+
+    </div>
+    <div class="col-sm-12"[hidden]="this.hideDoctorConsults">
+      <div>
+        <button type="button" class="close" aria-label="Close" (click)= "closeDoctorsInfo()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <table class=" col-12  table table-striped table-hover" style="text-align: center;">
+        <thead>
+          <tr>
+            <th scope="col">Doctor's username</th>
+            <th scope="col">Doctor's submissions</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{this.doctorUsername}}</td>
+            <td>{{this.doctorSubs}}</td>
+            <td>{{this.newDocConsultFromDate | date: "dd-MM-yyyy"}}</td>
+            <td>{{this.newDocConsultToDate | date: "dd-MM-yyyy"}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+    </div>
+  </div>

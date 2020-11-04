@@ -1,0 +1,28 @@
+<nav class="navbar mr-auto navbar-dark bg-dark">
+
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item btn-outline-light">
+      <div>
+        <h4>user: {{this.username}}</h4>
+      </div>
+    </li>
+  </ul>
+  <ul class="navbar-nav ">
+    <li class="nav-item">
+      <button type="button" class="btn btn-outline-light" (click)="goToFreePatients()">Available patients</button></li>
+  </ul>
+   <ul class="navbar-nav ">
+    <li class="nav-item">
+      <button type="button" class="btn btn-outline-light" (click)="goToMyPatients()">My patients</button></li>
+  </ul>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <button type="button" class="btn btn-outline-light" (click)="manageAccount()">Manage Account</button></li>
+  </ul>
+
+  <ul class="nav navbar-nav ">
+    <li class="nav-item">
+      <button type="button" class="btn btn-outline-light" (click)="logout()">Logout</button> </li>
+  </ul>
+</nav>
+

@@ -1,0 +1,53 @@
+<sachhon-navbar></sachhon-navbar>
+<div class="container-fluid h-100">
+
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5 shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="card-body ">
+          <h5 class="card-title text-center">Sign Up</h5>
+          <form [formGroup]="userForm" (ngSubmit)="forSubmited()">
+            <div class="form-group ">
+              <label>Name</label>
+              <input type="text" class="form-control"  formControlName="name">
+            </div>
+            <div class="form-group">
+              <label>Surname</label>
+              <input type="text" class="form-control"  formControlName="surname">
+            </div>
+            <div class="form-group">
+              <label>Username</label>
+              <input type="text" class="form-control" formControlName="username">
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="text" class="form-control" formControlName="password">
+            </div>
+            <div class="form-group">
+              <label>Amka</label>
+              <input type="text" class="form-control"  formControlName="amka">
+            </div>
+            <div class="form-group">
+              <label>Date of birth</label>
+              <input type="date" class="form-control"  formControlName="dob">
+            </div>
+            <div class="form-group" style="margin-bottom: 5vh">
+              <label>Gender</label>
+                <div>
+                  <input type="radio" value="MALE" formControlName="gender">
+                  <span>Male</span>
+                <input type="radio" value="FEMALE" formControlName="gender">
+                  <span>Female</span>
+                </div>
+            </div>
+            <div class="center">
+              <button type="submit" class="btn btn-primary" [disabled]="!userForm.valid">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ 
+</div>

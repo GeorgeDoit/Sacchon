@@ -1,0 +1,204 @@
+<nav class="navbar navbar-dark bg-dark">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item btn-outline-light">
+      <div>
+        <h4>user: {{this.username}}</h4>
+      </div>
+    </li>
+  </ul>
+  <ul class="navbar-nav navbar-right mr-auto">
+    <li class="nav-item">
+      <button type="button" class="btn btn-outline-light" (click)="manageAccount()">Manage Account</button></li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <li class="nav-item">
+      <button type="button" class="btn btn-outline-light" (click)="logout()">Logout</button> </li>
+  </ul>
+</nav>
+
+<div class="container-fluid h-100" >
+  <div class="row" >
+    <div class="col-sm-9 col-md-7 col-lg-12 mx-auto">
+      <div class="card card-measurements my-5">
+        <div style="text-align: center;" class="card-body">
+
+          <h3>My Measurements</h3>
+          <div class="row col-lg-12">
+              <div class="col-lg-4">
+                <h4>Select date range</h4>
+                <ngb-datepicker #dp (dateSelect)="onMeasurmentDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden">
+                </ngb-datepicker>
+                <ng-template #t let-date let-focused="focused">
+                  <span class="custom-day"
+                        [class.focused]="focused"
+                        [class.range]="measurmentIsRange(date)"
+                        [class.faded]="measurmentIsHovered(date) || measurmentIsInside(date)"
+                        (mouseenter)="measurmentHoveredDate = date"
+                        (mouseleave)="measurmentHoveredDate = null">
+                    {{ date.day }}
+                  </span>
+                </ng-template>
+                <div>
+                  <button type="button" class="btn col-3 btn-primary" (click)="getMeasurmentsByDate()">Get</button>
+                </div>
+              </div>
+
+              <div class="col-lg-8">
+                <div [hidden]="hideMeasurments" >
+                  <div>
+
+                    <button type="button" class="close" aria-label="Close" (click)= "cLoseMeasurmentTable()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <table class="table table-striped table-hover ">
+                    <thead>
+                      <tr>
+                        <th scope="col">Glucose Level</th>
+                        <th scope="col">Carb Intake</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let measurment of this.measurments">
+                        <td>{{measurment.glucoseLevel}}</td>
+                        <td>{{measurment.carbIntake}}</td>
+                        <td>{{measurment.dateStored | date:'dd/MM/yyyy'}}</td>
+                        <td>
+                          <button type="button" class="btn btn-primary" (click)="openModal(editMeasurmentModal, measurment)">Edit</button>
+                         </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
+    </div>
+  </div>
+
+
+  <div class="row col-lg-12">
+
+    <div class="col-4 mx-auto">
+
+        <div class="card card-consults my-5">
+          <div style="text-align: center;" class="card-body">
+        <h3>My consultations</h3>
+          <button type="button" class="btn col-3 btn-primary" (click)="getConsults()">Get</button>
+          </div>
+
+        <div class="row col-lg-12" [hidden]="hideConsults">
+
+
+          <button type="button" class="close" aria-label="Close" (click)= "closeConsults()" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Date Stored</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of this.consults">
+              <td >{{c.title}}</td>
+              <td >{{c.description}}</td>
+              <td >{{c.dateStored | date:'dd/MM/yyyy'}}</td>
+            </tr>
+          </tbody>
+          </table>
+        </div>
+        </div>
+    </div>
+
+
+    <div class="col-4  mx-auto">
+        <div style="text-align: center;" class="card card-add my-5">
+          <div class="card-body">
+        <h3>Store data</h3>
+        <form [formGroup]="addMeasurmentForm" (ngSubmit)="addMeasurmentFormSubmitted()">
+          <div class="form-group">
+            <input type="text" class="form-control col-sm" placeholder="Glucose level" formControlName="glucose">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Carb intake" formControlName="carbs">
+          </div>
+          <div class="center">
+            <button type="submit" class="btn  col-3 btn-primary" [disabled]="!addMeasurmentForm.valid">Submit</button>
+          </div>
+        </form>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4 mx-auto">
+      <div class="card card-stats my-5">
+        <div style="text-align: center;"class="card-body">
+          <h3>Daily average stats</h3>
+          <button type="button" class="btn col-3  btn-primary" (click)="getDailyStats()">Get</button>
+
+          <div [hidden]="hideStats">
+            <button type="button" class="close" aria-label="Close" (click)= "closeStats()" >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <table class="table table-striped table-hover"  >
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Glucose Level</th>
+                  <th scope="col">Carb Intake</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let stat of this.avgStats[0] | keyvalue">
+                  <td>{{stat.key}}</td>
+                  <td>{{stat.value.avrgGlucoseLevel | number : '1.2-2'}}</td>
+                  <td>{{stat.value.avrgCarb}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<ng-template #editMeasurmentModal let-modal>
+  <div class="modal-header">
+   <h5 class="modal-title" id="editMeasurmentLabel">Edit Measurment</h5>
+   <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+   </button>
+  </div>
+
+  <div class="modal-body">
+   <form [formGroup]="editMeasurmentForm" (ngSubmit)="modalFormSubmit()">
+    <div class="form-group row">
+
+     <label for="glucoseLevel" class="col-sm-4 col-form-label">Glucose level</label>
+     <div class="col-sm-8">
+      <input type="text" class="form-control" placeholder="enter glucose level" id="glucose" formControlName="glucose" >
+     </div>
+    </div>
+
+    <div class="form-group row">
+     <label for="lastname" class="col-sm-4 col-form-label">Carb Intake</label>
+     <div class="col-sm-8">
+      <input type="text" class="form-control" placeholder="enter carb intake" id="carbs" formControlName="carbs">
+    </div>
+    </div>
+
+    <div class="modal-footer">
+     <button type="submit" class="btn btn-danger" (click)="deleteMeasurment()">Delete</button>
+     <button type="submit" class="btn btn-dark">Save changes</button>
+    </div>
+   </form>
+  </div>
+ </ng-template>
+</div>
+

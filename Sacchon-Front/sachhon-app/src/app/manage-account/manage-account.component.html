@@ -1,0 +1,144 @@
+
+<nav class="navbar navbar-dark bg-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <button type="button" class="btn btn-outline-light" (click)="backClicked()">Back</button></li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <li class="nav-item">
+      <button type="button" class="btn btn-outline-light" (click)="logout()">Logout</button> </li>
+  </ul>
+</nav>
+<div class="container-fluid h-100" >
+  <div class="row">
+
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-manage my-5">
+        <div class="card-body" style="text-align: center;">
+      <h3>Update</h3>
+      <div *ngIf="getDoc">
+        <button type="button" class="col-2 btn btn-primary" (click)="openModal(docModal, user)">Submit</button>
+      </div>
+      <div *ngIf="getPat">
+        <button type="button" class="col-2 btn btn-primary" (click)="openModal(updateModal, user)">Submit</button>
+      </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-login my-5">
+        <div class="card-body"style="text-align: center;">
+      <h3>Delete</h3>
+      <div class="center">
+        <button type="submit" class="btn btn-danger" (click)="openModal(deleteModal)">Delete</button>
+      </div>
+    </div>
+    </div>
+    </div>
+
+  </div>
+
+</div>
+
+<ng-template #updateModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="updateLabel">Update Account</h5>
+    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+    <div class="modal-body">
+      <form [formGroup]="patientForm" (ngSubmit)="updateModalFormSubmit()">
+        <div class="form-group row">
+          <label for="title" class="col-sm-4 col-form-label">Name</label>
+          <div class="col-sm-8">
+          <input type="text" class="form-control" placeholder="Enter title" id="name" formControlName="name" >
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="description" class="col-sm-4 col-form-label">Surname</label>
+          <div class="col-sm-8">
+          <input type="text" class="form-control" placeholder="Enter description" id="surname" formControlName="surname">
+        </div>
+        </div>
+        <div class="form-group row">
+          <label for="description" class="col-sm-4 col-form-label">Amka</label>
+          <div class="col-sm-8">
+          <input type="text" class="form-control" placeholder="Enter description" id="amka" formControlName="amka">
+        </div>
+        </div>
+        <div class="form-group row">
+          <label for="description" class="col-sm-4 col-form-label">Date Of Birth</label>
+          <div class="col-sm-8">
+          <input type="text" class="form-control" placeholder="Enter description" id="dob" formControlName="dob">
+        </div>
+        </div>
+        <div class="form-group row">
+          <label for="description" class="col-sm-4 col-form-label">Gender</label>
+          <div class="col-sm-8">
+          <input type="text" class="form-control" placeholder="Enter description" id="gender" formControlName="gender">
+        </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-dark">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+
+
+  <ng-template #docModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="docLabel">Update Account</h5>
+      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+      <div class="modal-body">
+        <form [formGroup]="doctorForm" (ngSubmit)="docModalFormSubmit()">
+          <div class="form-group row">
+            <label for="title" class="col-sm-4 col-form-label">Name</label>
+            <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Enter title" id="name" formControlName="name" >
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="description" class="col-sm-4 col-form-label">Surname</label>
+            <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Enter description" id="surname" formControlName="surname">
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-dark">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+
+
+    <ng-template #deleteModal let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="docLabel">Delete Account</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+        <div class="modal-body" >
+          <div>
+            <p>Do u realy wish to delete your account?</p>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-danger" (click)="deleteAccount()">Yes</button>
+            </div>
+          </div>
+
+
+        </div>
+      </ng-template>
+
